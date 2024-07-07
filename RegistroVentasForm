@@ -1,0 +1,93 @@
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.math.BigDecimal;
+import java.sql.Date;
+
+public class RegistroVentasForm extends JFrame {
+    private JComboBox<String> productoComboBox;
+    private JTextField cantidadField;
+    private JTextField precioVentaField;
+    private JTextField fechaField;
+    private JButton registrarVentaButton;
+
+    public RegistroVentasForm() {
+        setTitle("Registrar Venta");
+        setSize(400, 300);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(null);
+
+        JLabel productoLabel = new JLabel("Producto:");
+        productoLabel.setBounds(10, 20, 80, 25);
+        panel.add(productoLabel);
+
+        productoComboBox = new JComboBox<>(new String[]{"Producto 1", "Producto 2", "Producto 3"});
+        productoComboBox.setBounds(100, 20, 165, 25);
+        panel.add(productoComboBox);
+
+        JLabel cantidadLabel = new JLabel("Cantidad:");
+        cantidadLabel.setBounds(10, 60, 80, 25);
+        panel.add(cantidadLabel);
+
+        cantidadField = new JTextField(20);
+        cantidadField.setBounds(100, 60, 165, 25);
+        panel.add(cantidadField);
+
+        JLabel precioVentaLabel = new JLabel("Precio Venta:");
+        precioVentaLabel.setBounds(10, 100, 80, 25);
+        panel.add(precioVentaLabel);
+
+        precioVentaField = new JTextField(20);
+        precioVentaField.setBounds(100, 100, 165, 25);
+        panel.add(precioVentaField);
+
+        JLabel fechaLabel = new JLabel("Fecha:");
+        fechaLabel.setBounds(10, 140, 80, 25);
+        panel.add(fechaLabel);
+
+        fechaField = new JTextField(20);
+        fechaField.setBounds(100, 140, 165, 25);
+        panel.add(fechaField);
+
+        registrarVentaButton = new JButton("Registrar Venta");
+        registrarVentaButton.setBounds(100, 180, 165, 25);
+        panel.add(registrarVentaButton);
+
+        add(panel);
+
+        registrarVentaButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                registrarVenta();
+            }
+        });
+    }
+
+    private void registrarVenta() {
+        try {
+            String producto = (String) productoComboBox.getSelectedItem();
+            int cantidad = Integer.parseInt(cantidadField.getText());
+            BigDecimal precioVenta = new BigDecimal(precioVentaField.getText());
+            Date fecha = Date.valueOf(fechaField.getText());
+
+            // Aquí se debería llamar al método para registrar la venta en la base de datos
+            // Por ejemplo:
+            // VentaDAO ventaDAO = new VentaDAO();
+            // Venta venta = new Venta(fecha, productoId, cantidad, precioVenta);
+            // ventaDAO.registrarVenta(venta);
+
+            JOptionPane.showMessageDialog(this, "Venta registrada exitosamente!");
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error al registrar la venta: " + ex.getMessage());
+        }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            new RegistroVentasForm().setVisible(true);
+        });
+    }
+}
