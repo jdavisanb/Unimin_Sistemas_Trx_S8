@@ -1,0 +1,82 @@
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.math.BigDecimal;
+
+public class ActualizarInventarioForm extends JFrame {
+    private JComboBox<String> productoComboBox;
+    private JTextField cantidadDisponibleField;
+    private JTextField precioField;
+    private JButton actualizarInventarioButton;
+
+    public ActualizarInventarioForm() {
+        setTitle("Actualizar Inventario");
+        setSize(400, 250);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(null);
+
+        JLabel productoLabel = new JLabel("Producto:");
+        productoLabel.setBounds(10, 20, 80, 25);
+        panel.add(productoLabel);
+
+        productoComboBox = new JComboBox<>(new String[]{"Producto 1", "Producto 2", "Producto 3"});
+        productoComboBox.setBounds(100, 20, 165, 25);
+        panel.add(productoComboBox);
+
+        JLabel cantidadDisponibleLabel = new JLabel("Cantidad Disp:");
+        cantidadDisponibleLabel.setBounds(10, 60, 100, 25);
+        panel.add(cantidadDisponibleLabel);
+
+        cantidadDisponibleField = new JTextField(20);
+        cantidadDisponibleField.setBounds(120, 60, 145, 25);
+        panel.add(cantidadDisponibleField);
+
+        JLabel precioLabel = new JLabel("Precio:");
+        precioLabel.setBounds(10, 100, 80, 25);
+        panel.add(precioLabel);
+
+        precioField = new JTextField(20);
+        precioField.setBounds(100, 100, 165, 25);
+        panel.add(precioField);
+
+        actualizarInventarioButton = new JButton("Actualizar Inventario");
+        actualizarInventarioButton.setBounds(100, 140, 165, 25);
+        panel.add(actualizarInventarioButton);
+
+        add(panel);
+
+        actualizarInventarioButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                actualizarInventario();
+            }
+        });
+    }
+
+    private void actualizarInventario() {
+        try {
+            String producto = (String) productoComboBox.getSelectedItem();
+            int cantidadDisponible = Integer.parseInt(cantidadDisponibleField.getText());
+            BigDecimal precio = new BigDecimal(precioField.getText());
+
+            // Aquí se debería llamar al método para actualizar el inventario en la base de datos
+            // Por ejemplo:
+            // ProductoDAO productoDAO = new ProductoDAO();
+            // Producto producto = new Producto(productoId, nombre, descripcion, precio, cantidadDisponible);
+            // productoDAO.actualizarProducto(producto);
+
+            JOptionPane.showMessageDialog(this, "Inventario actualizado exitosamente!");
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error al actualizar el inventario: " + ex.getMessage());
+        }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            new ActualizarInventarioForm().setVisible(true);
+        });
+    }
+}
