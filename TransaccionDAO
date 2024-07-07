@@ -1,0 +1,39 @@
+import java.sql.Connection;
+import java.sql.SQLException;
+
+public class TransaccionDAO {
+
+    public void realizarVentaYActualizarInventario(Venta venta, Producto producto) {
+        Connection conn = null;
+        try {
+            conn = DatabaseConnection.getConnection();
+            conn.setAutoCommit(false);
+
+            VentaDAO ventaDAO = new VentaDAO();
+            ProductoDAO productoDAO = new ProductoDAO();
+
+            ventaDAO.registrarVenta(venta);
+            productoDAO.actualizarProducto(producto);
+
+            conn.commit();
+        } catch (SQLException e) {
+            if (conn != null) {
+                try {
+                    conn.rollback();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            e.printStackTrace();
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.setAutoCommit(true);
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+}
