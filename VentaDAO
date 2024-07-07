@@ -1,0 +1,18 @@
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+public class VentaDAO {
+
+    public void registrarVenta(Venta venta) throws SQLException {
+        String sql = "INSERT INTO ventas (fecha, producto_id, cantidad, precio_venta) VALUES (?, ?, ?, ?)";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setDate(1, venta.getFecha());
+            stmt.setInt(2, venta.getProductoId());
+            stmt.setInt(3, venta.getCantidad());
+            stmt.setBigDecimal(4, venta.getPrecioVenta());
+            stmt.executeUpdate();
+        }
+    }
+}
