@@ -1,0 +1,52 @@
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class ProductoDAO {
+
+    public void insertarProducto(Producto producto) throws SQLException {
+        String sql = "INSERT INTO productos (nombre, descripcion, precio, cantidad) VALUES (?, ?, ?, ?)";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, producto.getNombre());
+            stmt.setString(2, producto.getDescripcion());
+            stmt.setBigDecimal(3, producto.getPrecio());
+            stmt.setInt(4, producto.getCantidad());
+            stmt.executeUpdate();
+        }
+    }
+
+    public void actualizarProducto(Producto producto) throws SQLException {
+        String sql = "UPDATE productos SET nombre = ?, descripcion = ?, precio = ?, cantidad = ? WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, producto.getNombre());
+            stmt.setString(2, producto.getDescripcion());
+            stmt.setBigDecimal(3, producto.getPrecio());
+            stmt.setInt(4, producto.getCantidad());
+            stmt.setInt(5, producto.getId());
+            stmt.executeUpdate();
+        }
+    }
+
+    public Producto obtenerProducto(int id) throws SQLException {
+        String sql = "SELECT * FROM productos WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return new Producto(
+                            rs.getInt("id"),
+                            rs.getString("nombre"),
+                            rs.getString("descripcion"),
+                            rs.getBigDecimal("precio"),
+                            rs.getInt("cantidad")
+                    );
+                }
+            }
+        }
+        return null;
+    }
+}
